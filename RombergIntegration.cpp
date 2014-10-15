@@ -6,31 +6,29 @@ using CSC2110::Double;
 
 #include <math.h>
 
+#include <iostream>
+using namespace std;
+
 //a is the lower limit and b is the upper limit
 double RombergIntegration::accurateRomberg(MultiVarFunction* f, double a, double b, int level)
 {
    Double* db;  //use this variable to place and retrieve values on the queue
    
-   QueueLinked<Double>* q1 =
-   QueueLinked<Double>* q2 =
+   QueueLinked<Double>* q1 = new QueueLinked<Double>();
+   QueueLinked<Double>* q2 = new QueueLinked<Double>();
 
 
    int counter = 0;
    int n = 1;  //current number of intervals
-   while (                     )
+   while (counter <= level)
    {
       //DO THIS
       //obtain the required number of trapezoid evaluations depending on the number of levels requested
       //put all of the level 0 results on the q1
+      double res = RecursiveIntegration::romberg(f, a, b, n);
+      db = new Double(res);
 
-
-
-
-
-
-
-
-
+      q1->enqueue(db);
 
       n = 2*n;  //double the number of intervals
       counter++;
@@ -45,30 +43,31 @@ double RombergIntegration::accurateRomberg(MultiVarFunction* f, double a, double
    //the total number of executions of the loop is ??
 
    //DO THIS
-   int iterations =                //can be precomputed
+   int iterations = level;             //can be precomputed
    while (iterations > 0)
    {
       //DO THIS
       //use the algorithm described in the lab to improve the accuracy of your level 0 results
+      factor = pow(4, power);
 
+      while (q1->size() > 1) {
 
+         Double* less = q1->dequeue();
+         Double* more = q1->peek();
 
+         double res = (factor * more->getValue() - less->getValue())  / (factor - 1);
+         db = new Double(res);
 
+         q2->enqueue(db);
 
+      }
 
+      delete q1;
+      
+      q1 = q2;
+      q2 = new QueueLinked<Double>();
 
-
-
-
-
-
-
-
-
-
-
-
-
+      power++;
       iterations--;
    }
 
